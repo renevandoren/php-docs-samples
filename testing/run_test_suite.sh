@@ -30,7 +30,11 @@ do
         # verify direct google dependencies are up to date
         # only run for travis crons
         if [ "${TRAVIS_EVENT_TYPE}" = "cron" ]; then
-            ! composer outdated --direct -m | grep -q 'google/'
+            if composer outdated --direct -m | grep -q 'google/' ; then
+                # output out-of-date libraries
+                composer outdated --direct -m
+                exit 1
+            fi
         fi
     fi
     echo "running phpunit in ${DIR}"
